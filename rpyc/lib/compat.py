@@ -6,6 +6,7 @@ import sys
 import time
 
 is_py3k = (sys.version_info[0] >= 3)
+is_ipy = (sys.platform == 'cli')
 
 if is_py3k:
     exec("execute = exec")

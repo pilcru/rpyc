@@ -18,7 +18,7 @@ Example::
     >>> x == z
     True
 """
-from rpyc.lib.compat import Struct, BytesIO, is_py3k, BYTES_LITERAL
+from rpyc.lib.compat import Struct, BytesIO, is_py3k, is_ipy, BYTES_LITERAL
 
 
 # singletons
@@ -50,7 +50,7 @@ TAG_FLOAT           = b"\x18"
 TAG_SLICE           = b"\x19"
 TAG_FSET            = b"\x1a"
 TAG_COMPLEX         = b"\x1b"
-if is_py3k:
+if is_py3k or is_ipy:
     IMM_INTS = dict((i, bytes([i + 0x50])) for i in range(-0x30, 0xa0))
 else:
     IMM_INTS = dict((i, chr(i + 0x50)) for i in range(-0x30, 0xa0))
@@ -313,7 +313,7 @@ def dump(obj):
     """
     stream = []
     _dump(obj, stream)
-    return b"".join(stream)
+    return b"".join(map(bytes, stream))
 
 def load(data):
     """Recreates (loads) an object from its byte-string representation
